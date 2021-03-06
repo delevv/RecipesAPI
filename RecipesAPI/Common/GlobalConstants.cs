@@ -8,6 +8,9 @@
         // Recipe
         public const int RecipeNameMaxLength = 50;
 
+        // Category
+        public const int CategoryNameMaxLength = 50;
+
         // RecipeIngredient
         public const double MinQuantity = 0.01;
         public const double MaxQuantity = 999.99;

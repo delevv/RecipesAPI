@@ -22,11 +22,16 @@ namespace RecipesAPI.Data.Models
         [Required]
         public string ImageUrl { get; set; }
 
-        public virtual ICollection<RecipeIngredient> RecipeIngredients { get; set; }
-
         [Required]
         public TimeSpan CookingTime { get; set; }
 
+        [Required]
         public string Instructions { get; set; }
+       
+        public int CategoryId { get; set; }
+        
+        public virtual Category Category { get; set; }
+
+        public virtual ICollection<RecipeIngredient> RecipeIngredients { get; set; }
     }
 }

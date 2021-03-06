@@ -21,6 +21,6 @@ namespace RecipesAPI.Data.Models
         [Range(GlobalConstants.MinQuantity, GlobalConstants.MaxQuantity)]
         public double Quantity { get; set; }
 
-        public UnitOfMeasurement? IngredientMeasurement { get; set; }
+        public UnitOfMeasurement IngredientMeasurement { get; set; }
     }
 }
