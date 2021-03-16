@@ -21,9 +21,26 @@ namespace RecipesAPI.Data.Repositories
             await this.context.SaveChangesAsync();
         }
 
+        public async Task<Category> GetByIdAsync(int id)
+        {
+            return await this.context.Categories.FindAsync(id);
+        }
+
         public async Task<IEnumerable<Category>> ListAsync()
         {
             return await this.context.Categories.ToListAsync();
+        }
+
+        public async Task RemoveAsync(Category category)
+        {
+            this.context.Categories.Remove(category);
+            await this.context.SaveChangesAsync();
+        }
+
+        public async Task UpdateAsync(Category category)
+        {
+            this.context.Categories.Update(category);
+            await this.context.SaveChangesAsync();
         }
     }
 }

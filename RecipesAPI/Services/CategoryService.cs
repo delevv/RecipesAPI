@@ -1,4 +1,5 @@
-﻿using RecipesAPI.Data.Models;
+﻿using RecipesAPI.Common;
+using RecipesAPI.Data.Models;
 using RecipesAPI.Data.Repositories.Interfaces;
 using RecipesAPI.Services.Communication;
 using RecipesAPI.Services.Interfaces;
@@ -18,25 +19,73 @@ namespace RecipesAPI.Services
             this.categoryRepository = categoryRepository;
         }
 
-        public async Task<AddCategoryResponse> AddAsync(Category category)
+        public async Task<CategoryResponse> AddAsync(Category category)
         {
             try
             {
-               await this.categoryRepository.AddAsync(category);
+                await this.categoryRepository.AddAsync(category);
 
-                return new AddCategoryResponse(category);
+                return new CategoryResponse(category);
             }
             catch (Exception ex)
             {
                 //TODO: Log errors
 
-                return new AddCategoryResponse($"An error occurred when saving the category: {ex.Message}");
+                return new CategoryResponse(string.Format(GlobalConstants.AddCategoryErrorMessage, ex.Message));
+            }
+        }
+
+        public async Task<CategoryResponse> DeleteAsync(int id)
+        {
+            var currCategory = await this.categoryRepository.GetByIdAsync(id);
+
+            if (currCategory == null)
+            {
+                return new CategoryResponse(GlobalConstants.CategoryNotFoundMessage);
+            }
+
+            try
+            {
+                await this.categoryRepository.RemoveAsync(currCategory);
+
+                return new CategoryResponse(currCategory);
+            }
+            catch (Exception ex)
+            {
+                //TODO: Log errors
+
+                return new CategoryResponse(string.Format(GlobalConstants.DeleteCategoryErrorMessage, ex.Message));
             }
         }
 
         public async Task<IEnumerable<Category>> ListAsync()
         {
             return await this.categoryRepository.ListAsync();
+        }
+
+        public async Task<CategoryResponse> UpdateAsync(int id, Category category)
+        {
+            var currCategory = await this.categoryRepository.GetByIdAsync(id);
+
+            if (currCategory == null)
+            {
+                return new CategoryResponse(GlobalConstants.CategoryNotFoundMessage);
+            }
+
+            currCategory.Name = category.Name;
+
+            try
+            {
+                await this.categoryRepository.UpdateAsync(currCategory);
+
+                return new CategoryResponse(currCategory);
+            }
+            catch (Exception ex)
+            {
+                //TODO: Log errors
+
+                return new CategoryResponse(string.Format(GlobalConstants.UpdateCategoryErrorMessage, ex.Message));
+            }
         }
     }
 }

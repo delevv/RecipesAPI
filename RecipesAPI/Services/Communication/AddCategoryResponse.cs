@@ -2,24 +2,24 @@
 
 namespace RecipesAPI.Services.Communication
 {
-    public class AddCategoryResponse : BaseResponse
+    public class CategoryResponse : BaseResponse
     {
         public Category Category { get; }
 
-        private AddCategoryResponse(bool success, string message, Category category)
+        private CategoryResponse(bool success, string message, Category category)
             : base(success, message)
         {
             this.Category = category;
         }
 
         // success response
-        public AddCategoryResponse(Category category)
+        public CategoryResponse(Category category)
             : this(true, string.Empty, category)
         {
         }
 
         // error response
-        public AddCategoryResponse(string message)
+        public CategoryResponse(string message)
             : this(false, message, null)
         {
         }

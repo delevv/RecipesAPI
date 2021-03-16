@@ -11,5 +11,11 @@ namespace RecipesAPI.Data.Repositories.Interfaces
         Task<IEnumerable<Category>> ListAsync();
 
         Task AddAsync(Category category);
+
+        Task<Category> GetByIdAsync(int id);
+
+        Task UpdateAsync(Category category);
+
+        Task RemoveAsync(Category category);
     }
 }

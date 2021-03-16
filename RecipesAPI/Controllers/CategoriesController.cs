@@ -51,5 +51,41 @@ namespace RecipesAPI.Controllers
 
             return Ok(categoryResource);
         }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateAsync(int id, [FromBody] CategoryInputResource resource)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState.GetErrorMessages());
+            }
+
+            var category = this.mapper.Map<CategoryInputResource, Category>(resource);
+            var result = await this.categoryService.UpdateAsync(id, category);
+
+            if (!result.Success)
+            {
+                return BadRequest(result.Message);
+            }
+
+            var categoryResource = this.mapper.Map<Category, CategoryResource>(result.Category);
+
+            return Ok(categoryResource);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            var result = await this.categoryService.DeleteAsync(id);
+
+            if (!result.Success)
+            {
+                return BadRequest(result.Message);
+            }
+
+            var categoryResource = this.mapper.Map<Category, CategoryResource>(result.Category);
+
+            return Ok(categoryResource);
+        }
     }
 }
