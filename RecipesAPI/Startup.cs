@@ -1,18 +1,16 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using RecipesAPI.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using RecipesAPI.Data.Repositories;
+using RecipesAPI.Data.Repositories.Interfaces;
+using RecipesAPI.Mapping;
+using RecipesAPI.Services;
+using RecipesAPI.Services.Interfaces;
 
 namespace RecipesAPI
 {
@@ -25,20 +23,26 @@ namespace RecipesAPI
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection")));
-            
+
             services.AddControllers();
-            
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "RecipesAPI", Version = "v1" });
             });
+
+            services.AddAutoMapper(typeof(ModelToResourceProfile));
+
+            // repositories
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+
+            // services
+            services.AddScoped<ICategoryService, CategoryService>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
