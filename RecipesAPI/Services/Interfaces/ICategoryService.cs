@@ -1,7 +1,6 @@
 ﻿using RecipesAPI.Data.Models;
-using System;
+using RecipesAPI.Services.Communication;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace RecipesAPI.Services.Interfaces
@@ -9,5 +8,7 @@ namespace RecipesAPI.Services.Interfaces
     public interface ICategoryService
     {
         Task<IEnumerable<Category>> ListAsync();
+
+        Task<AddCategoryResponse> AddAsync(Category category);
     }
 }

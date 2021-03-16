@@ -34,7 +34,7 @@ namespace RecipesAPI
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "RecipesAPI", Version = "v1" });
             });
 
-            services.AddAutoMapper(typeof(ModelToResourceProfile));
+            services.AddAutoMapper(typeof(ModelToResourceProfile), typeof(ResourceToModelProfile));
 
             // repositories
             services.AddScoped<ICategoryRepository, CategoryRepository>();

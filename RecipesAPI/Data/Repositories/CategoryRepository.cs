@@ -15,9 +15,15 @@ namespace RecipesAPI.Data.Repositories
         {
         }
 
+        public async Task AddAsync(Category category)
+        {
+            await this.context.Categories.AddAsync(category);
+            await this.context.SaveChangesAsync();
+        }
+
         public async Task<IEnumerable<Category>> ListAsync()
         {
-            return await base.context.Categories.ToListAsync();
+            return await this.context.Categories.ToListAsync();
         }
     }
 }
