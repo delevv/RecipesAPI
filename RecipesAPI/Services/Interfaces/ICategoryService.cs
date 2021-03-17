@@ -1,4 +1,5 @@
 ﻿using RecipesAPI.Data.Models;
+using RecipesAPI.Resources.Categories;
 using RecipesAPI.Services.Communication;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -7,11 +8,13 @@ namespace RecipesAPI.Services.Interfaces
 {
     public interface ICategoryService
     {
-        Task<IEnumerable<Category>> ListAsync();
+        Task<IEnumerable<CategoryResource>> ListAsync();
 
-        Task<CategoryResponse> AddAsync(Category category);
+        Task<CategoryByIdResource> GetByIdAsync(int id);
 
-        Task<CategoryResponse> UpdateAsync(int id, Category category);
+        Task<CategoryResponse> AddAsync(CategoryInputResource resource);
+
+        Task<CategoryResponse> UpdateAsync(int id, CategoryInputResource category);
 
         Task<CategoryResponse> DeleteAsync(int id);
     }

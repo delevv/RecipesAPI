@@ -1,6 +1,8 @@
-﻿using RecipesAPI.Common;
+﻿using AutoMapper;
+using RecipesAPI.Common;
 using RecipesAPI.Data.Models;
 using RecipesAPI.Data.Repositories.Interfaces;
+using RecipesAPI.Resources.Categories;
 using RecipesAPI.Services.Communication;
 using RecipesAPI.Services.Interfaces;
 using System;
@@ -13,19 +15,25 @@ namespace RecipesAPI.Services
     public class CategoryService : ICategoryService
     {
         private readonly ICategoryRepository categoryRepository;
+        private readonly IMapper mapper;
 
-        public CategoryService(ICategoryRepository categoryRepository)
+        public CategoryService(ICategoryRepository categoryRepository, IMapper mapper)
         {
             this.categoryRepository = categoryRepository;
+            this.mapper = mapper;
         }
 
-        public async Task<CategoryResponse> AddAsync(Category category)
+        public async Task<CategoryResponse> AddAsync(CategoryInputResource resource)
         {
             try
             {
+                var category = this.mapper.Map<CategoryInputResource, Category>(resource);
+
                 await this.categoryRepository.AddAsync(category);
 
-                return new CategoryResponse(category);
+                var categoryResource = this.mapper.Map<Category, CategoryResource>(category);
+
+                return new CategoryResponse(categoryResource);
             }
             catch (Exception ex)
             {
@@ -37,18 +45,20 @@ namespace RecipesAPI.Services
 
         public async Task<CategoryResponse> DeleteAsync(int id)
         {
-            var currCategory = await this.categoryRepository.GetByIdAsync(id);
+            var category = await this.categoryRepository.GetByIdAsync(id);
 
-            if (currCategory == null)
+            if (category == null)
             {
                 return new CategoryResponse(GlobalConstants.CategoryNotFoundMessage);
             }
 
             try
             {
-                await this.categoryRepository.RemoveAsync(currCategory);
+                await this.categoryRepository.RemoveAsync(category);
 
-                return new CategoryResponse(currCategory);
+                var categoryResource = this.mapper.Map<Category, CategoryResource>(category);
+
+                return new CategoryResponse(categoryResource);
             }
             catch (Exception ex)
             {
@@ -58,12 +68,21 @@ namespace RecipesAPI.Services
             }
         }
 
-        public async Task<IEnumerable<Category>> ListAsync()
+        public async Task<CategoryByIdResource> GetByIdAsync(int id)
         {
-            return await this.categoryRepository.ListAsync();
+            var category = await this.categoryRepository.GetByIdAsync(id);
+
+            return this.mapper.Map<Category, CategoryByIdResource>(category);
         }
 
-        public async Task<CategoryResponse> UpdateAsync(int id, Category category)
+        public async Task<IEnumerable<CategoryResource>> ListAsync()
+        {
+            var categories = await this.categoryRepository.ListAsync();
+
+            return this.mapper.Map<IEnumerable<Category>, IEnumerable<CategoryResource>>(categories);
+        }
+
+        public async Task<CategoryResponse> UpdateAsync(int id, CategoryInputResource resource)
         {
             var currCategory = await this.categoryRepository.GetByIdAsync(id);
 
@@ -72,13 +91,15 @@ namespace RecipesAPI.Services
                 return new CategoryResponse(GlobalConstants.CategoryNotFoundMessage);
             }
 
-            currCategory.Name = category.Name;
+            currCategory.Name = resource.Name;
 
             try
             {
                 await this.categoryRepository.UpdateAsync(currCategory);
 
-                return new CategoryResponse(currCategory);
+                var categoryResource = this.mapper.Map<Category, CategoryResource>(currCategory);
+
+                return new CategoryResponse(categoryResource);
             }
             catch (Exception ex)
             {

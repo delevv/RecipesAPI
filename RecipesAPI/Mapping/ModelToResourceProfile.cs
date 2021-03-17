@@ -10,6 +10,7 @@ namespace RecipesAPI.Mapping
         public ModelToResourceProfile()
         {
             CreateMap<Category, CategoryResource>();
+            CreateMap<Category, CategoryByIdResource>();
             CreateMap<Recipe, RecipeInCategoryResource>();
         }
     }

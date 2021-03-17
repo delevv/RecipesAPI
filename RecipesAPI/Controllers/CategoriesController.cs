@@ -1,12 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using RecipesAPI.Data.Models;
+using RecipesAPI.Common;
 using RecipesAPI.Extensions;
 using RecipesAPI.Resources.Categories;
 using RecipesAPI.Services.Interfaces;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace RecipesAPI.Controllers
@@ -15,20 +13,30 @@ namespace RecipesAPI.Controllers
     public class CategoriesController : Controller
     {
         private readonly ICategoryService categoryService;
-        private readonly IMapper mapper;
 
-        public CategoriesController(ICategoryService categoryService, IMapper mapper)
+        public CategoriesController(ICategoryService categoryService)
         {
             this.categoryService = categoryService;
-            this.mapper = mapper;
         }
 
         [HttpGet]
         public async Task<IEnumerable<CategoryResource>> GetAllAsync()
         {
-            var categories = await this.categoryService.ListAsync();
+            return await this.categoryService.ListAsync();
+        }
 
-            return this.mapper.Map<IEnumerable<Category>, IEnumerable<CategoryResource>>(categories);
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetByIdAsync(int id)
+        {
+            var category = await this.categoryService.GetByIdAsync(id);
+
+            if(category == null)
+            {
+                return NotFound(GlobalConstants.CategoryNotFoundMessage);
+            }
+
+            return Ok(category);
         }
 
         [HttpPost]
@@ -39,19 +47,16 @@ namespace RecipesAPI.Controllers
                 return BadRequest(ModelState.GetErrorMessages());
             }
 
-            var category = this.mapper.Map<CategoryInputResource, Category>(resource);
-            var result = await this.categoryService.AddAsync(category);
+            var result = await this.categoryService.AddAsync(resource);
 
             if (!result.Success)
             {
                 return BadRequest(result.Message);
             }
 
-            var categoryResource = this.mapper.Map<Category, CategoryResource>(result.Category);
-
-            return Ok(categoryResource);
+            return Ok(result.Category);
         }
-
+        
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAsync(int id, [FromBody] CategoryInputResource resource)
         {
@@ -59,18 +64,15 @@ namespace RecipesAPI.Controllers
             {
                 return BadRequest(ModelState.GetErrorMessages());
             }
-
-            var category = this.mapper.Map<CategoryInputResource, Category>(resource);
-            var result = await this.categoryService.UpdateAsync(id, category);
+            var result = await this.categoryService.UpdateAsync(id, resource);
 
             if (!result.Success)
             {
                 return BadRequest(result.Message);
             }
 
-            var categoryResource = this.mapper.Map<Category, CategoryResource>(result.Category);
-
-            return Ok(categoryResource);
+           
+            return Ok(result.Category);
         }
 
         [HttpDelete("{id}")]
@@ -83,9 +85,7 @@ namespace RecipesAPI.Controllers
                 return BadRequest(result.Message);
             }
 
-            var categoryResource = this.mapper.Map<Category, CategoryResource>(result.Category);
-
-            return Ok(categoryResource);
+            return Ok(result.Category);
         }
     }
 }

@@ -31,5 +31,8 @@ namespace RecipesAPI.Data.Models.Enums
 
         [Description("kg")]
         kilogram = 8,
+
+        [Description("un")]
+        unity = 9,
     }
 }
