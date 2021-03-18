@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RecipesAPI.Services.Interfaces
 {
-    public interface ICategoryService
+    public interface ICategoriesService
     {
         Task<IEnumerable<CategoryResource>> ListAsync();
 

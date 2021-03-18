@@ -10,10 +10,10 @@ namespace RecipesAPI.Services
 {
     public class RecipesService : IRecipesService
     {
-        private readonly IRecipeRepository recipeRepository;
+        private readonly IRecipesRepository recipeRepository;
         private readonly IMapper mapper;
 
-        public RecipesService(IRecipeRepository recipeRepository, IMapper mapper)
+        public RecipesService(IRecipesRepository recipeRepository, IMapper mapper)
         {
             this.recipeRepository = recipeRepository;
             this.mapper = mapper;

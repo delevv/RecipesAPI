@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace RecipesAPI.Data.Repositories
 {
-    public class CategoryRepository : BaseRepository, ICategoryRepository
+    public class CategoriesRepository : BaseRepository, ICategoriesRepository
     {
-        public CategoryRepository(ApplicationDbContext context)
+        public CategoriesRepository(ApplicationDbContext context)
             : base(context)
         {
         }

@@ -12,12 +12,12 @@ using System.Threading.Tasks;
 
 namespace RecipesAPI.Services
 {
-    public class CategoryService : ICategoryService
+    public class CategoriesService : ICategoriesService
     {
-        private readonly ICategoryRepository categoryRepository;
+        private readonly ICategoriesRepository categoryRepository;
         private readonly IMapper mapper;
 
-        public CategoryService(ICategoryRepository categoryRepository, IMapper mapper)
+        public CategoriesService(ICategoriesRepository categoryRepository, IMapper mapper)
         {
             this.categoryRepository = categoryRepository;
             this.mapper = mapper;

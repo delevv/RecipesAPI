@@ -11,9 +11,9 @@ namespace RecipesAPI.Controllers
     [Route("[controller]")]
     public class CategoriesController : Controller
     {
-        private readonly ICategoryService categoryService;
+        private readonly ICategoriesService categoryService;
 
-        public CategoriesController(ICategoryService categoryService)
+        public CategoriesController(ICategoriesService categoryService)
         {
             this.categoryService = categoryService;
         }

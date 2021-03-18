@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace RecipesAPI.Data.Repositories.Interfaces
 {
-    public interface IRecipeRepository
+    public interface IRecipesRepository
     {
         Task<IEnumerable<Recipe>> ListAsync();
     }

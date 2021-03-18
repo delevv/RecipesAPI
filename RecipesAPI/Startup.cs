@@ -37,11 +37,11 @@ namespace RecipesAPI
             services.AddAutoMapper(typeof(ModelToResourceProfile), typeof(ResourceToModelProfile));
 
             // repositories
-            services.AddScoped<ICategoryRepository, CategoryRepository>();
-            services.AddScoped<IRecipeRepository, RecipeRepository>();
+            services.AddScoped<ICategoriesRepository, CategoriesRepository>();
+            services.AddScoped<IRecipesRepository, RecipesRepository>();
 
             // services
-            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<ICategoriesService, CategoriesService>();
             services.AddScoped<IRecipesService, RecipesService>();
         }
 

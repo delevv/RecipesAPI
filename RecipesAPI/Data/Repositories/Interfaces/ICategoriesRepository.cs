@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RecipesAPI.Data.Repositories.Interfaces
 {
-    public interface ICategoryRepository
+    public interface ICategoriesRepository
     {
         Task<IEnumerable<Category>> ListAsync();
 
