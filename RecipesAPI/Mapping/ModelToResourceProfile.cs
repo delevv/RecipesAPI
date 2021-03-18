@@ -9,9 +9,18 @@ namespace RecipesAPI.Mapping
     {
         public ModelToResourceProfile()
         {
+            // Category
             CreateMap<Category, CategoryResource>();
+
             CreateMap<Category, CategoryByIdResource>();
+
             CreateMap<Recipe, RecipeInCategoryResource>();
+
+
+            // Recipe
+            CreateMap<Recipe, RecipeResource>()
+                .ForMember(r => r.CookingTime,
+                opt => opt.MapFrom(x => x.CookingTime.TotalMinutes));
         }
     }
 }

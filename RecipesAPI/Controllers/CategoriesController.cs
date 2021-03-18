@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using RecipesAPI.Common;
 using RecipesAPI.Extensions;
 using RecipesAPI.Resources.Categories;
