@@ -1,9 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RecipesAPI.Data.Models;
 using RecipesAPI.Data.Repositories.Interfaces;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace RecipesAPI.Data.Repositories
@@ -24,6 +22,11 @@ namespace RecipesAPI.Data.Repositories
         public async Task<Category> GetByIdAsync(int id)
         {
             return await this.context.Categories.FindAsync(id);
+        }
+
+        public async Task<Category> GetByNameAsync(string name)
+        {
+            return await this.context.Categories.FirstOrDefaultAsync(c => c.Name.ToLower() == name.ToLower());
         }
 
         public async Task<IEnumerable<Category>> ListAsync()

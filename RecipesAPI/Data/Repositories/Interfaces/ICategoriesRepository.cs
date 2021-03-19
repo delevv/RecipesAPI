@@ -14,6 +14,8 @@ namespace RecipesAPI.Data.Repositories.Interfaces
 
         Task<Category> GetByIdAsync(int id);
 
+        Task<Category> GetByNameAsync(string name);
+
         Task UpdateAsync(Category category);
 
         Task RemoveAsync(Category category);
