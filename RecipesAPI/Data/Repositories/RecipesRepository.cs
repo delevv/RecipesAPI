@@ -13,6 +13,12 @@ namespace RecipesAPI.Data.Repositories
         {
         }
 
+        public async Task AddAsync(Recipe recipe)
+        {
+            await this.context.Recipes.AddAsync(recipe);
+            await this.context.SaveChangesAsync();
+        }
+
         public async Task<IEnumerable<Recipe>> ListAsync()
         {
             return await this.context.Recipes.ToListAsync();

@@ -21,8 +21,12 @@
 
         // Category
         public const string CategoryNotFoundMessage = "Category not found.";
-        public const string AddCategoryErrorMessage = "An error occurred when saving the category: {0}"; 
-        public const string UpdateCategoryErrorMessage = "An error occurred when updating the category: {0}"; 
+        public const string AddCategoryErrorMessage = "An error occurred when saving the category: {0}";
+        public const string UpdateCategoryErrorMessage = "An error occurred when updating the category: {0}";
         public const string DeleteCategoryErrorMessage = "An error occurred when deleting the category: {0}";
+
+        // Recipe
+        public const string WrongRecipeIngredientMeasurmentMessage = "Ingredient Measurment is wrong. Ingredient name - {0}";
+        public const string AddRecipeErrorMessage = "An error occurred when saving the recipe: {0}";
     }
 }

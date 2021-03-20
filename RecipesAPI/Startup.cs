@@ -39,6 +39,7 @@ namespace RecipesAPI
             // repositories
             services.AddScoped<ICategoriesRepository, CategoriesRepository>();
             services.AddScoped<IRecipesRepository, RecipesRepository>();
+            services.AddScoped<IIngredientsRepository, IngredientsRepository>();
 
             // services
             services.AddScoped<ICategoriesService, CategoriesService>();

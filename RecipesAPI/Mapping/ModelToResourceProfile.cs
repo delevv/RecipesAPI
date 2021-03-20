@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using RecipesAPI.Data.Models;
+using RecipesAPI.Extensions;
 using RecipesAPI.Resources.Categories;
+using RecipesAPI.Resources.Ingredients;
 using RecipesAPI.Resources.Recipes;
 
 namespace RecipesAPI.Mapping
@@ -14,13 +16,21 @@ namespace RecipesAPI.Mapping
 
             CreateMap<Category, CategoryByIdResource>();
 
-            CreateMap<Recipe, RecipeInCategoryResource>();
-
-
             // Recipe
             CreateMap<Recipe, RecipeResource>()
                 .ForMember(r => r.CookingTime,
                 opt => opt.MapFrom(x => x.CookingTime.TotalMinutes));
+
+            CreateMap<Recipe, RecipeInCategoryResource>();
+
+            CreateMap<Recipe, RecipeByIdResource>()
+                .ForMember(r => r.CookingTime,
+                opt => opt.MapFrom(x => x.CookingTime.TotalMinutes));
+
+            // Ingredients
+            CreateMap<RecipeIngredient, IngredientInRecipeResource>()
+                .ForMember(ri => ri.IngredientMeasurement,
+                opt => opt.MapFrom(x => x.IngredientMeasurement.ToDescriptionString()));
         }
     }
 }

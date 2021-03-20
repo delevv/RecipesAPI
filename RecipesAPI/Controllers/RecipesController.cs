@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RecipesAPI.Extensions;
 using RecipesAPI.Resources.Recipes;
 using RecipesAPI.Services.Interfaces;
 using System;
@@ -24,5 +25,22 @@ namespace RecipesAPI.Controllers
             return await this.recipesService.ListAsync();
         }
 
+        [HttpPost]
+        public async Task<IActionResult> PostAsync([FromBody] RecipeInputResource resource)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState.GetErrorMessages());
+            }
+
+            var result = await this.recipesService.AddAsync(resource);
+
+            if (!result.Success)
+            {
+                return BadRequest(result.Message);
+            }
+
+            return Ok(result.Recipe);
+        }
     }
 }

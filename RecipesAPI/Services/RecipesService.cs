@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using RecipesAPI.Common;
 using RecipesAPI.Data.Models;
+using RecipesAPI.Data.Models.Enums;
 using RecipesAPI.Data.Repositories.Interfaces;
 using RecipesAPI.Resources.Recipes;
 using RecipesAPI.Services.Communication;
@@ -14,25 +16,87 @@ namespace RecipesAPI.Services
     {
         private readonly IRecipesRepository recipeRepository;
         private readonly ICategoriesRepository categoriesRepository;
+        private readonly IIngredientsRepository ingredientsRepository;
         private readonly IMapper mapper;
 
-        public RecipesService(IRecipesRepository recipeRepository, ICategoriesRepository categoriesRepository, IMapper mapper)
+        public RecipesService(
+            IRecipesRepository recipeRepository,
+            ICategoriesRepository categoriesRepository,
+            IIngredientsRepository ingredientsRepository,
+            IMapper mapper)
         {
             this.recipeRepository = recipeRepository;
             this.categoriesRepository = categoriesRepository;
+            this.ingredientsRepository = ingredientsRepository;
             this.mapper = mapper;
         }
 
-        public Task<RecipeResponse> AddAsync(RecipeInputResource resource)
+        public async Task<RecipeResponse> AddAsync(RecipeInputResource resource)
         {
-            var currentRecipe = new Recipe();
-            
-            currentRecipe.ImageUrl = resource.ImageUrl;
-            currentRecipe.Name = resource.Name;
-            currentRecipe.Instructions = resource.Instructions;
-            currentRecipe.CookingTime = TimeSpan.FromMinutes(resource.CookingTime);
+            var currentRecipe = new Recipe
+            {
+                ImageUrl = resource.ImageUrl,
+                Name = resource.Name,
+                Instructions = resource.Instructions,
+                CookingTime = TimeSpan.FromMinutes(resource.CookingTime)
+            };
 
-            var recipeCategory = this.categoriesRepository.GetByNameAsync(resource.Category);
+            var category = await this.categoriesRepository.GetByNameAsync(resource.Category);
+
+            if (category == null)
+            {
+                category = new Category()
+                {
+                    Name = resource.Category,
+                };
+            }
+
+            currentRecipe.Category = category;
+
+            foreach (var recipeIngredient in resource.Ingredients)
+            {
+                var currentIngredient = await this.ingredientsRepository.GetByNameAsync(recipeIngredient.Name);
+
+                if (currentIngredient == null)
+                {
+                    currentIngredient = new Ingredient()
+                    {
+                        Name = recipeIngredient.Name,
+                    };
+                }
+
+                UnitOfMeasurement measurment;
+
+                var isEnumParsed = Enum.TryParse(recipeIngredient.IngredientMeasurement, true, out measurment);
+
+                if (!isEnumParsed)
+                {
+                    return new RecipeResponse(string.Format(GlobalConstants.WrongRecipeIngredientMeasurmentMessage, recipeIngredient.Name));
+                }
+
+                var currentRecipeIngredient = new RecipeIngredient()
+                {
+                    Ingredient = currentIngredient,
+                    Recipe = currentRecipe,
+                    Quantity = recipeIngredient.Quantity,
+                    IngredientMeasurement = measurment,
+                };
+
+                currentRecipe.RecipeIngredients.Add(currentRecipeIngredient);
+            }
+
+            try
+            {
+                await this.recipeRepository.AddAsync(currentRecipe);
+
+                var recipeResourse = this.mapper.Map<Recipe, RecipeByIdResource>(currentRecipe);
+
+                return new RecipeResponse(recipeResourse);
+            }
+            catch (Exception ex)
+            {
+                return new RecipeResponse(string.Format(GlobalConstants.AddRecipeErrorMessage, ex.Message));
+            }
         }
 
         public async Task<IEnumerable<RecipeResource>> ListAsync()

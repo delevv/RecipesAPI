@@ -7,5 +7,7 @@ namespace RecipesAPI.Data.Repositories.Interfaces
     public interface IRecipesRepository
     {
         Task<IEnumerable<Recipe>> ListAsync();
+
+        Task AddAsync(Recipe recipe);
     }
 }
