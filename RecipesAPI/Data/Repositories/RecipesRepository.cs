@@ -21,7 +21,7 @@ namespace RecipesAPI.Data.Repositories
 
         public async Task<IEnumerable<Recipe>> ListAsync()
         {
-            return await this.context.Recipes.ToListAsync();
+            return await this.context.Recipes.Include(r => r.Category).ToListAsync();
         }
     }
 }
