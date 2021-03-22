@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RecipesAPI.Common;
 using RecipesAPI.Extensions;
 using RecipesAPI.Resources.Recipes;
 using RecipesAPI.Services.Interfaces;
@@ -23,6 +24,20 @@ namespace RecipesAPI.Controllers
         public async Task<IEnumerable<RecipeResource>> GetAllAsync()
         {
             return await this.recipesService.ListAsync();
+        }
+
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetByIdAsync(int id)
+        {
+            var recipe = await this.recipesService.GetByIdAsync(id);
+
+            if (recipe == null)
+            {
+                return NotFound(GlobalConstants.RecipeNotFoundMessage);
+            }
+
+            return Ok(recipe);
         }
 
         [HttpPost]

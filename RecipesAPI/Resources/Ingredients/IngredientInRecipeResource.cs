@@ -2,9 +2,9 @@
 {
     public class IngredientInRecipeResource
     {
-        public int IngredientId { get; set; }
+        public int Id { get; set; }
 
-        public string IngredientName { get; set; }
+        public string Name { get; set; }
 
         public double Quantity { get; set; }
 

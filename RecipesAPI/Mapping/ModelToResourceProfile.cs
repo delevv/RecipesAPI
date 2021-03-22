@@ -29,8 +29,12 @@ namespace RecipesAPI.Mapping
 
             // Ingredients
             CreateMap<RecipeIngredient, IngredientInRecipeResource>()
-                .ForMember(ri => ri.IngredientMeasurement,
-                opt => opt.MapFrom(x => x.IngredientMeasurement.ToDescriptionString()));
+                .ForMember(i => i.IngredientMeasurement,
+                    opt => opt.MapFrom(x => x.IngredientMeasurement.ToDescriptionString()))
+                .ForMember(i => i.Id,
+                    opt => opt.MapFrom(x => x.IngredientId))
+                .ForMember(i => i.Name,
+                    opt => opt.MapFrom(x => x.Ingredient.Name));
         }
     }
 }

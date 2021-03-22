@@ -10,5 +10,7 @@ namespace RecipesAPI.Services.Interfaces
         Task<IEnumerable<RecipeResource>> ListAsync();
 
         Task<RecipeResponse> AddAsync(RecipeInputResource resource);
+
+        Task<RecipeByIdResource> GetByIdAsync(int id);
     }
 }

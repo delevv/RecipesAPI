@@ -99,6 +99,13 @@ namespace RecipesAPI.Services
             }
         }
 
+        public async Task<RecipeByIdResource> GetByIdAsync(int id)
+        {
+            var recipe = await this.recipeRepository.GetByIdAsync(id);
+
+            return this.mapper.Map<Recipe, RecipeByIdResource>(recipe);
+        }
+
         public async Task<IEnumerable<RecipeResource>> ListAsync()
         {
             var recipes = await this.recipeRepository.ListAsync();

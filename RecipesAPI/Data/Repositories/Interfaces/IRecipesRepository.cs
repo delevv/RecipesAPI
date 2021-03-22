@@ -9,5 +9,8 @@ namespace RecipesAPI.Data.Repositories.Interfaces
         Task<IEnumerable<Recipe>> ListAsync();
 
         Task AddAsync(Recipe recipe);
+
+        Task<Recipe> GetByIdAsync(int id);
+
     }
 }
