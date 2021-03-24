@@ -29,5 +29,8 @@
         public const string RecipeNotFoundMessage = "Recipe not found.";
         public const string WrongRecipeIngredientMeasurmentMessage = "Ingredient Measurment is wrong. Ingredient name - {0}";
         public const string AddRecipeErrorMessage = "An error occurred when saving the recipe: {0}";
+
+        // Ingredient
+        public const string AddIngredientErrorMessage = "An error occurred when saving the ingredient: {0}";
     }
 }

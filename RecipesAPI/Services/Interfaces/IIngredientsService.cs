@@ -1,4 +1,5 @@
 ﻿using RecipesAPI.Resources.Ingredients;
+using RecipesAPI.Services.Communication;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -8,6 +9,6 @@ namespace RecipesAPI.Services.Interfaces
     {
         Task<IEnumerable<IngredientResource>> ListAsync();
 
-        Task<IngredientResource> AddAsync(IngredientInputResource resource);
+        Task<IngredientResponse> AddAsync(IngredientInputResource resource);
     }
 }

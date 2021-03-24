@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using RecipesAPI.Common;
 using RecipesAPI.Data.Models;
 using RecipesAPI.Data.Repositories.Interfaces;
 using RecipesAPI.Resources.Ingredients;
+using RecipesAPI.Services.Communication;
 using RecipesAPI.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -21,9 +23,24 @@ namespace RecipesAPI.Services
             this.mapper = mapper;
         }
 
-        public Task<IngredientResource> AddAsync(IngredientInputResource resource)
+        public async Task<IngredientResponse> AddAsync(IngredientInputResource resource)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var ingredient = this.mapper.Map<IngredientInputResource, Ingredient>(resource);
+
+                await this.ingredientsRepository.AddAsync(ingredient);
+
+                var ingredientResource = this.mapper.Map<Ingredient, IngredientResource>(ingredient);
+
+                return new IngredientResponse(ingredientResource);
+            }
+            catch (Exception ex)
+            {
+                //TODO: Log errors
+
+                return new IngredientResponse(string.Format(GlobalConstants.AddIngredientErrorMessage, ex.Message));
+            }
         }
 
         public async Task<IEnumerable<IngredientResource>> ListAsync()

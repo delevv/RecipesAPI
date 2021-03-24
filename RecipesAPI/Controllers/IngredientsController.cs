@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RecipesAPI.Extensions;
 using RecipesAPI.Resources.Ingredients;
 using RecipesAPI.Services.Interfaces;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace RecipesAPI.Controllers
@@ -22,6 +21,24 @@ namespace RecipesAPI.Controllers
         public async Task<IEnumerable<IngredientResource>> GetAllAsync()
         {
             return await this.ingredientsService.ListAsync();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PostAsync([FromBody] IngredientInputResource resource)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState.GetErrorMessages());
+            }
+
+            var result = await this.ingredientsService.AddAsync(resource);
+
+            if (!result.Success)
+            {
+                return BadRequest(result.Message);
+            }
+
+            return Ok(result.Ingredient);
         }
     }
 }
