@@ -95,6 +95,8 @@ namespace RecipesAPI.Services
             }
             catch (Exception ex)
             {
+                //TODO: Log errors
+
                 return new RecipeResponse(string.Format(GlobalConstants.AddRecipeErrorMessage, ex.Message));
             }
         }

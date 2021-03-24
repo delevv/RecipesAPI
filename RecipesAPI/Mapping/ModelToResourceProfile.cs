@@ -35,6 +35,8 @@ namespace RecipesAPI.Mapping
                     opt => opt.MapFrom(x => x.IngredientId))
                 .ForMember(i => i.Name,
                     opt => opt.MapFrom(x => x.Ingredient.Name));
+
+            CreateMap<Ingredient, IngredientResource>();
         }
     }
 }

@@ -44,6 +44,7 @@ namespace RecipesAPI
             // services
             services.AddScoped<ICategoriesService, CategoriesService>();
             services.AddScoped<IRecipesService, RecipesService>();
+            services.AddScoped<IIngredientsService, IngredientsService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
